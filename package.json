@@ -4,8 +4,8 @@
     "description": "A simple app that helps independently conduct EMDR sessions using visual stimuli.",
     "main": "index.js",
     "scripts": {
-        "build:css": "tailwindcss -i ./src/styles.css -o ./dist/styles.css --minify",
-        "watch:css": "tailwindcss -i ./src/styles.css -o ./dist/styles.css --watch"
+        "build:css": "tailwindcss -i ./src/styles.css -o ./styles.css --minify",
+        "watch:css": "tailwindcss -i ./src/styles.css -o ./styles.css --watch"
     },
     "keywords": [],
     "author": "",
