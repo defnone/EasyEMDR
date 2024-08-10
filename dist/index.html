@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0" />
+        <title>Easy EMDR</title>
+        <link
+            rel="stylesheet"
+            href="styles.css" />
+
+        <style></style>
+    </head>
+    <body class="bg-slate-900">
+        <div
+            id="header"
+            class="fixed top-0 z-50 w-full p-10 bg-slate-950 bg-opacity-25 animate-slide-down">
+            <div class="flex flex-row justify-center items-center">
+                <div class="flex w-fit pr-5 mr-5 border-r border-slate-800 items-center">
+                    <label
+                        class="text-white mr-3"
+                        for="duration"
+                        >Duration
+                    </label>
+                    <input
+                        id="duration"
+                        class="px-4 w-24 h-10 bg-slate-500 text-white rounded-md focus:outline-none focus:bg-slate-700"
+                        type="number"
+                        step="500" />
+                    <span class="text-white ml-3"> ms</span>
+                </div>
+
+                <div class="flex w-fit pr-5 items-center">
+                    <label
+                        class="text-white mr-3"
+                        for="timer"
+                        >Timer
+                    </label>
+                    <input
+                        id="timer"
+                        class="px-4 w-24 h-10 bg-slate-500 text-white rounded-md focus:outline-none focus:bg-slate-700"
+                        type="number"
+                        value="30"
+                        step="10" />
+                    <span class="text-white ml-3"> sec</span>
+                </div>
+            </div>
+        </div>
+        <div
+            id="m-container"
+            class="flex flex-col w-full h-full absolute">
+            <div
+                id="animation"
+                class="relative w-10 h-10 m-auto bg-slate-500 rounded-full transition-all ease-in-out duration-1000"></div>
+        </div>
+        <div
+            id="footter"
+            class="absolute p-10 bottom-0">
+            <a
+                href="https://en.wikipedia.org/wiki/Eye_movement_desensitization_and_reprocessing"
+                class="text-slate-400 hover:text-slate-200 underline underline-offset-4">
+                What is EMDR?
+            </a>
+        </div>
+        <script>
+            let timerID;
+            let timerShow;
+            const animation = document.getElementById('animation');
+            const mContainer = document.getElementById('m-container');
+            const duration = document.getElementById('duration');
+            const timer = document.getElementById('timer');
+            const header = document.getElementById('header');
+            const footter = document.getElementById('footter');
+
+            const storedDuration = localStorage.getItem('duration') || 1500;
+            const storedTimer = localStorage.getItem('timer') || 30;
+            timer.value = storedTimer;
+
+            duration.value = storedDuration;
+            animation.style.animationDuration = `${duration.value}ms`;
+
+            mContainer.addEventListener('click', () => {
+                if (!animation.classList.contains('animate')) {
+                    animation.classList.remove('animate-fade-in');
+                    animation.classList.add('animate');
+                    header.classList.remove('animate-slide-down');
+                    header.classList.add('animate-slide-up');
+                    footter.style.display = 'none';
+
+                    timerID = setTimeout(() => {
+                        animation.classList.remove('animate');
+                        header.classList.add('animate-slide-down');
+                        footter.style.display = 'block';
+                    }, timer.value * 1000);
+                } else {
+                    clearTimeout(timerID);
+                    animation.classList.remove('animate');
+                    animation.style.display = 'none';
+                    header.classList.add('animate-slide-down');
+                    footter.style.display = 'block';
+                    footter.classList.add('animate-fade-in');
+                    animation.classList.add('animate-fade-in');
+
+                    timerShow = setTimeout(() => {
+                        animation.style.display = 'block';
+                        footter.classList.add('animate-fade-in');
+                        animation.classList.add('animate-fade-in');
+                    }, 100);
+                }
+            });
+
+            duration.addEventListener('input', () => {
+                animation.style.animationDuration = `${duration.value}ms`;
+                localStorage.setItem('duration', duration.value);
+            });
+
+            timer.addEventListener('input', () => {
+                localStorage.setItem('timer', timer.value);
+            });
+        </script>
+    </body>
+</html>
